@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "RestaurantManager\ApiGateway.csproj", "{57F44FB5-E769-4243-B1DE-7A1C2BD163F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthService", "AuthService\AuthService.csproj", "{DCAFA0C6-E992-4710-8EEF-48CC71C3B8F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{E8A95A51-BBE6-4292-B66B-C99D6B56E7C5}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderService", "OrderService\OrderService.csproj", "{261F0193-5F6B-4A18-A041-CFAF2DA562FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KitchenService", "KitchenService\KitchenService.csproj", "{E4F0B762-F039-4BEE-8876-D7F579DBC434}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService", "PaymentService\PaymentService.csproj", "{2329BC95-EB9C-400B-9C5E-64B6ED69F93A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{2AB80C88-4C7A-4E83-9327-6C059A442941}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotififcationService", "NotififcationService\NotififcationService.csproj", "{64ADC173-9885-4CF3-AFB4-248086F92314}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57F44FB5-E769-4243-B1DE-7A1C2BD163F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57F44FB5-E769-4243-B1DE-7A1C2BD163F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57F44FB5-E769-4243-B1DE-7A1C2BD163F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57F44FB5-E769-4243-B1DE-7A1C2BD163F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCAFA0C6-E992-4710-8EEF-48CC71C3B8F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCAFA0C6-E992-4710-8EEF-48CC71C3B8F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCAFA0C6-E992-4710-8EEF-48CC71C3B8F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCAFA0C6-E992-4710-8EEF-48CC71C3B8F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{261F0193-5F6B-4A18-A041-CFAF2DA562FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{261F0193-5F6B-4A18-A041-CFAF2DA562FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{261F0193-5F6B-4A18-A041-CFAF2DA562FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{261F0193-5F6B-4A18-A041-CFAF2DA562FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4F0B762-F039-4BEE-8876-D7F579DBC434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4F0B762-F039-4BEE-8876-D7F579DBC434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4F0B762-F039-4BEE-8876-D7F579DBC434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4F0B762-F039-4BEE-8876-D7F579DBC434}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2329BC95-EB9C-400B-9C5E-64B6ED69F93A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2329BC95-EB9C-400B-9C5E-64B6ED69F93A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2329BC95-EB9C-400B-9C5E-64B6ED69F93A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2329BC95-EB9C-400B-9C5E-64B6ED69F93A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64ADC173-9885-4CF3-AFB4-248086F92314}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64ADC173-9885-4CF3-AFB4-248086F92314}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64ADC173-9885-4CF3-AFB4-248086F92314}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64ADC173-9885-4CF3-AFB4-248086F92314}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DCAFA0C6-E992-4710-8EEF-48CC71C3B8F3} = {2AB80C88-4C7A-4E83-9327-6C059A442941}
+		{261F0193-5F6B-4A18-A041-CFAF2DA562FC} = {2AB80C88-4C7A-4E83-9327-6C059A442941}
+		{E4F0B762-F039-4BEE-8876-D7F579DBC434} = {2AB80C88-4C7A-4E83-9327-6C059A442941}
+		{2329BC95-EB9C-400B-9C5E-64B6ED69F93A} = {2AB80C88-4C7A-4E83-9327-6C059A442941}
+		{64ADC173-9885-4CF3-AFB4-248086F92314} = {2AB80C88-4C7A-4E83-9327-6C059A442941}
+	EndGlobalSection
+EndGlobal

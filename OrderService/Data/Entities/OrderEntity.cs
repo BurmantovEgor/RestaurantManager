@@ -2,11 +2,12 @@
 {
     public class OrderEntity
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string CustomerName { get; set; }
-        public List<string> Items { get; set; } = new();
+        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         public decimal TotalPrice { get; set; }
-        public string Status { get; set; } = "Новый заказ";
+        public Guid StatusId { get; set; }
 
+        public StatusEntity Status { get; set; } 
+        public ICollection<OrderDetailEntity> OrderDetails { get; set; } 
     }
 }

@@ -1,8 +1,12 @@
+version: '3.8'
+
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - backend
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -15,6 +19,24 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     ports:
       - "9092:9092"
+    networks:
+      - backend
+
+  init-kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - kafka
+    entrypoint: ["/bin/sh", "-c", "/scripts/create-topics.sh"]
+    volumes:
+      - ./scripts:/scripts
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "kafka-topics", "--bootstrap-server", "kafka:9092", "--list"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 5s
 
   api-gateway:
     build: ./RestaurantManager
@@ -23,56 +45,94 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:5000
     depends_on:
-      - order-service
-      - kitchen-service
-      - payment-service
-
-  order-service:
-    build: 
-      context: .
-      dockerfile: OrderService/Dockerfile
-    ports:
-      - "5002:5002"
-    environment:
-      - ASPNETCORE_URLS=http://+:5002
-      - DB_CONNECTION_STRING=Host=order-db;Port=5432;Username=postgres;Password=postgres;Database=orderdb
-    depends_on:
-      - order-db
+      - init-kafka
+    entrypoint: ["/bin/sh", "-c", "sleep 10 && dotnet ApiGateway.dll"] 
+    networks:
+      - backend
 
   kitchen-service:
-    build: 
+    build:
       context: .
       dockerfile: KitchenService/Dockerfile
     ports:
       - "5003:5003"
     environment:
       - ASPNETCORE_URLS=http://+:5003
-      - DB_CONNECTION_STRING=Host=kitchen-db;Port=5432;Username=postgres;Password=postgres;Database=kitchendb
+      - ConnectionStrings__Postgres=Host=kitchen-db;Port=5432;Database=kitchendb;Username=postgres;Password=admin
     depends_on:
       - kitchen-db
-      - kafka
+      - init-kafka
+    entrypoint: ["/bin/sh", "-c", "sleep 10 && dotnet KitchenService.dll"]  
+    networks:
+      - backend
 
   payment-service:
-    build: 
+    build:
       context: .
       dockerfile: PaymentService/Dockerfile
     ports:
       - "5004:5004"
     environment:
       - ASPNETCORE_URLS=http://+:5004
-      - DB_CONNECTION_STRING=Host=payment-db;Port=5432;Username=postgres;Password=postgres;Database=paymentdb
+      - ConnectionStrings__Postgres=Host=kitchen-db;Port=5432;Database=paymentdb;Username=postgres;Password=admin
     depends_on:
       - payment-db
-      - kafka
+      - init-kafka
+    entrypoint: ["/bin/sh", "-c", "sleep 10 && dotnet PaymentService.dll"] 
+    networks:
+      - backend
+
+  menu-service:
+    build:
+      context: .
+      dockerfile: MenuService/Dockerfile
+    ports:
+      - "5005:5005"
+    environment:
+      - ASPNETCORE_URLS=http://+:5005
+      - ConnectionStrings__Postgres=Host=menu-db;Port=5432;Database=menudb;Username=postgres;Password=admin
+    depends_on:
+      - menu-db
+      - init-kafka
+    entrypoint: ["/bin/sh", "-c", "sleep 10 && dotnet MenuService.dll"]  
+    networks:
+      - backend
+
+  order-service:
+    build:
+      context: .
+      dockerfile: OrderService/Dockerfile
+    ports:
+      - "5002:5002"
+    environment:
+      - ASPNETCORE_URLS=http://+:5002
+      - ConnectionStrings__Postgres=Host=order-db;Port=5432;Database=orderdb;Username=postgres;Password=admin
+    depends_on:
+      - order-db
+      - init-kafka
+    entrypoint: ["/bin/sh", "-c", "sleep 10 && dotnet OrderService.dll"]  
+    networks:
+      - backend
 
   order-db:
     image: postgres:13
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: admin
       POSTGRES_DB: orderdb
     volumes:
       - order-db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  menu-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: menudb
+    volumes:
+      - menu-db-data:/var/lib/postgresql/data
     networks:
       - backend
 
@@ -80,7 +140,7 @@ services:
     image: postgres:13
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: admin
       POSTGRES_DB: kitchendb
     volumes:
       - kitchen-db-data:/var/lib/postgresql/data
@@ -91,7 +151,7 @@ services:
     image: postgres:13
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: admin
       POSTGRES_DB: paymentdb
     volumes:
       - payment-db-data:/var/lib/postgresql/data
@@ -102,6 +162,7 @@ volumes:
   order-db-data:
   kitchen-db-data:
   payment-db-data:
+  menu-db-data:
 
 networks:
   backend:
